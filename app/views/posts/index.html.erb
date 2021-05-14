@@ -1,0 +1,88 @@
+<h1>POSTS</h1>
+<br>
+<% @posts.each do |post| %>
+<div class="well bg-light">
+  <hr>
+  <%= link_to "Click here to modify...", post_path(post),  :class => 'btn btn-link' %>
+    <h3><%= post.title %> </h3>
+    <p><%= post.body %> <p>
+      <p> <%= post.likes.count %> likes</p>
+      <hr>
+      <div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-3">
+      <div class="accordion" id="accordionExample">
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingOne">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+              Like
+            </button>
+          </h2>
+          <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+            <div class="accordion-body">
+              <p>
+              <%= form_for [post, post.likes.build] do |form| %>
+                  <%= form.label :username %>
+                  <%= form.text_field(:username)%>
+                  <%= form.submit("LIKE",{:class => 'btn btn-primary'}) %>
+              <% end %>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="accordion" id="accordionExample">
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="headingOne">
+              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                Comments
+              </button>
+            </h2>
+            <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+              <div class="accordion-body">
+                <% post.comments.each do |comment| %>
+                  <div class="well">
+                    <p><strong> <%= comment.username %></strong>:<%= comment.body %>
+                      <%= link_to '[x]', [comment.post, comment], method: :delete, data:{confirm: 'are you sure?'} %>
+                    </p>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-4">
+      <div class="accordion" id="accordionExample">
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingOne">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+              ADD Comments
+            </button>
+          </h2>
+          <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+            <div class="accordion-body">
+              <%= form_for [post, post.comments.build] do |form| %>
+                <span>
+                  <%= form.label :username %><%= form.text_field(:username) %><br> <br>
+                </span>
+                <p>
+                  <%= form.text_area(:body, {:class => 'form-control', autofocus: true, placeholder: 'type your comment here'}) %>
+                </p>
+                <p>
+                  <%= form.submit("Comment",{:class => 'btn btn-primary'}) %>
+                </p>
+                <br>
+                <hr>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+      </div>
+      </div>
+</div>
+<br>
+<% end %>
